@@ -19,15 +19,6 @@ namespace GameOverlayApp
 
     class OverlayForm : Form
     {
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        const int SW_HIDE = 0;
-        const int SW_SHOW = 5;
-
         private const int UPDATE_INTERVAL = 1000;
         private Label systemInfoLabel;
         private NotifyIcon trayIcon;
@@ -45,12 +36,6 @@ namespace GameOverlayApp
 
         public OverlayForm()
         {
-            // Not sure why the console window shows up now,
-            // but this minimizes the window at least.
-            // FIXME: Stop console window from showing up
-            //  or at least showing in taskbar.
-            ShowWindow(GetConsoleWindow(), SW_HIDE);
-
             this.FormBorderStyle = FormBorderStyle.None;
 
             // TODO: Make background color adjustable
