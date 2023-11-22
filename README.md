@@ -1,3 +1,5 @@
+Disclaimer: I have never written C# before this repo. The code will probably look terrible.
+
 This project was forked to update and expand functionality.
 Forked with the intent to use with my ROG Ally as I got sick of waiting for ASUS to implement basic features.
 This can be used on any Windows device running on battery.
