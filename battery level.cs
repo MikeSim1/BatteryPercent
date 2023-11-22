@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Gma.System.MouseKeyHook;
+// using Gma.System.MouseKeyHook;
 
 namespace GameOverlayApp
 {
@@ -19,10 +19,19 @@ namespace GameOverlayApp
 
     class OverlayForm : Form
     {
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         private const int UPDATE_INTERVAL = 1000;
         private Label systemInfoLabel;
         private NotifyIcon trayIcon;
-        private IKeyboardMouseEvents m_GlobalHook;
+        // private IKeyboardMouseEvents m_GlobalHook;
 
         const int GWL_EXSTYLE = -20;
         const int WS_EX_TRANSPARENT = 0x20;
@@ -36,9 +45,20 @@ namespace GameOverlayApp
 
         public OverlayForm()
         {
+            // Not sure why the console window shows up now,
+            // but this minimizes the window at least.
+            // FIXME: Stop console window from showing up
+            //  or at least showing in taskbar.
+            ShowWindow(GetConsoleWindow(), SW_HIDE);
+
             this.FormBorderStyle = FormBorderStyle.None;
+
+            // TODO: Make background color adjustable
             this.BackColor = Color.Black;
+
+            // TODO: Make opacity adjustable
             this.Opacity = 0.6;
+
             this.TopMost = true;
             this.ShowInTaskbar = false;
 
@@ -48,12 +68,18 @@ namespace GameOverlayApp
             trayIcon.Visible = true;
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
+            trayIcon.ContextMenuStrip.Items.Add("Settings", null, OnSettingsClicked);
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, OnExitClicked);
 
             systemInfoLabel = new Label();
             systemInfoLabel.ForeColor = Color.White;
             systemInfoLabel.AutoSize = true;
-            systemInfoLabel.Font = new Font(systemInfoLabel.Font.FontFamily, systemInfoLabel.Font.Size * 2); 
+
+            // TODO: Adjust this based on the current resolution
+            //  (* 2) for 1080p, (+ 3) seems to be a good size for 900p
+            float fontSize = systemInfoLabel.Font.Size + 3;
+
+            systemInfoLabel.Font = new Font(systemInfoLabel.Font.FontFamily, fontSize);
             this.Controls.Add(systemInfoLabel);
 
             int initialStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
@@ -71,8 +97,8 @@ namespace GameOverlayApp
 
         private void Subscribe()
         {
-            m_GlobalHook = Hook.GlobalEvents();
-            m_GlobalHook.KeyDown += GlobalHookKeyPress;
+            // m_GlobalHook = Hook.GlobalEvents();
+            // m_GlobalHook.KeyDown += GlobalHookKeyPress;
         }
 
         private void GlobalHookKeyPress(object sender, KeyEventArgs e)
@@ -86,6 +112,16 @@ namespace GameOverlayApp
 
                 e.Handled = true; 
             }
+        }
+
+        private void OnSettingsClicked(object sender, EventArgs e)
+        {
+            // TODO: Open a new window for user to adjust various settings:
+            //  background color
+            //  text color
+            //  opacity
+            //  size
+            //  toggles for clock, battery %, time remaining
         }
 
         private void OnExitClicked(object sender, EventArgs e)
@@ -146,8 +182,8 @@ namespace GameOverlayApp
 
         public void Unsubscribe()
         {
-            m_GlobalHook.KeyDown -= GlobalHookKeyPress;
-            m_GlobalHook.Dispose();
+            // m_GlobalHook.KeyDown -= GlobalHookKeyPress;
+            // m_GlobalHook.Dispose();
         }
     }
 
