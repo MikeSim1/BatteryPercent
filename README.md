@@ -2,7 +2,10 @@ Disclaimer: I have never written C# before this repo. The code will probably loo
 
 This project was forked to update and expand functionality.
 Forked with the intent to use with my ROG Ally as I got sick of waiting for ASUS to implement basic features.
+There are currently some odd behaviors when running a game and this program at the same time when you try to access to command center on ROG Ally.
+Using Windows Powertoys and pinning this app to always be on top may prevent some weirdness with ROG Ally and its overlays.
 This can be used on any Windows device running on battery.
+
 
 # BatteryPercent
 Shows Time and battery percent
