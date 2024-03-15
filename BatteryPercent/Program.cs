@@ -65,8 +65,6 @@ namespace BatteryPercent
 
         public void reloadFromProperties()
         {
-            this.Hide();
-
             // TODO: Make background color adjustable
             this.BackColor = Color.Black;
 
@@ -93,7 +91,6 @@ namespace BatteryPercent
             updateTimer.Start();
 
             UpdateOverlaySizeAndPosition();
-            this.Show();
         }
 
         private void Subscribe()
