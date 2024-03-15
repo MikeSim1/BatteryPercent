@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -45,11 +46,7 @@ namespace BatteryPercent
 
             this.FormBorderStyle = FormBorderStyle.None;
 
-            // TODO: Make background color adjustable
-            this.BackColor = Color.Black;
-
-            // TODO: Make opacity adjustable
-            this.Opacity = 0.6;
+            reloadFromProperties();
 
             this.TopMost = true;
             this.ShowInTaskbar = false;
@@ -63,13 +60,26 @@ namespace BatteryPercent
             trayIcon.ContextMenuStrip.Items.Add("Settings", null, OnSettingsClicked);
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, OnExitClicked);
 
+            Subscribe();
+        }
+
+        public void reloadFromProperties()
+        {
+            this.Hide();
+
+            // TODO: Make background color adjustable
+            this.BackColor = Color.Black;
+
+            // TODO: Make opacity adjustable
+            this.Opacity = 0.6;
+
             systemInfoLabel = new Label();
             systemInfoLabel.ForeColor = Color.White;
             systemInfoLabel.AutoSize = true;
 
             // TODO: Adjust this based on the current resolution
             //  (* 2) for 1080p, (+ 3) seems to be a good size for 900p
-            float fontSize = systemInfoLabel.Font.Size + 3;
+            float fontSize = systemInfoLabel.Font.Size;
 
             systemInfoLabel.Font = new Font(systemInfoLabel.Font.FontFamily, fontSize);
             this.Controls.Add(systemInfoLabel);
@@ -83,13 +93,7 @@ namespace BatteryPercent
             updateTimer.Start();
 
             UpdateOverlaySizeAndPosition();
-
-            Subscribe();
-        }
-
-        public void reloadFromProperties()
-        {
-
+            this.Show();
         }
 
         private void Subscribe()
@@ -127,6 +131,7 @@ namespace BatteryPercent
         {
             string systemInfo = GetSystemInfo();
             systemInfoLabel.Text = systemInfo;
+            Debug.WriteLine(systemInfo);
 
             UpdateOverlaySizeAndPosition();
             this.Invalidate();
@@ -134,23 +139,44 @@ namespace BatteryPercent
 
         private string GetSystemInfo()
         {
+            Properties.Settings props = Properties.Settings.Default;
+            string stringToDisplay = "";
 
-            string time = DateTime.Now.ToString("hh:mm tt");
+            bool isCharging = SystemInformation.PowerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging);
 
-            string batteryStatus = SystemInformation.PowerStatus.BatteryLifePercent.ToString("P0");
-
-            if (SystemInformation.PowerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging))
+            if (props.ShowClock)
             {
-                return String.Format("{0} | Battery: {1} (Charging)", time, batteryStatus);
+                string time = DateTime.Now.ToString("hh:mm tt");
+                stringToDisplay += $"{time}";
+
+                // Some nicer formatting if we're showing anything other than time
+                if (props.ShowBatteryPercent || props.ShowBatteryTime)
+                {
+                    stringToDisplay += " | ";
+                }
             }
-            else
+
+            if (props.ShowBatteryPercent)
+            {
+                string batteryStatus = SystemInformation.PowerStatus.BatteryLifePercent.ToString("P0");
+                stringToDisplay += $"Battery: {batteryStatus} ";
+
+                if (isCharging)
+                {
+                    stringToDisplay += "\U0001F5F2";
+                }
+            }
+
+            if (props.ShowBatteryTime && !isCharging)
             {
                 int batteryLifeInSeconds = SystemInformation.PowerStatus.BatteryLifeRemaining;
                 int batteryHours = batteryLifeInSeconds / 3600;
                 int batteryMinutes = (batteryLifeInSeconds % 3600) / 60;
 
-                return String.Format("{0} | Battery: {1} ({2} hrs {3} mins left)", time, batteryStatus, batteryHours, batteryMinutes);
+                stringToDisplay += $"{batteryHours} hrs {batteryMinutes} mins";
             }
+
+            return stringToDisplay;
         }
 
         private void UpdateOverlaySizeAndPosition()

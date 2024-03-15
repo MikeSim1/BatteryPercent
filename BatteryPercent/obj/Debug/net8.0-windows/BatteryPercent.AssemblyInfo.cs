@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BatteryPercent")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb5868ae18f2483b68aaffee7936ebac6f7ed367")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+383dded5be6b6ab8029ddc87b37911e25f10a92b")]
 [assembly: System.Reflection.AssemblyProductAttribute("BatteryPercent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BatteryPercent")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

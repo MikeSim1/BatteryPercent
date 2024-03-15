@@ -31,3 +31,4 @@ C:\Users\mike\Documents\GitHub\BatteryPercent\BatteryPercent\obj\Debug\net8.0-wi
 C:\Users\mike\Documents\GitHub\BatteryPercent\BatteryPercent\obj\Debug\net8.0-windows\BatteryPercent.pdb
 C:\Users\mike\Documents\GitHub\BatteryPercent\BatteryPercent\obj\Debug\net8.0-windows\BatteryPercent.genruntimeconfig.cache
 C:\Users\mike\Documents\GitHub\BatteryPercent\BatteryPercent\obj\Debug\net8.0-windows\ref\BatteryPercent.dll
+C:\Users\mike\Documents\GitHub\BatteryPercent\BatteryPercent\bin\Debug\net8.0-windows\BatteryPercent.dll.config

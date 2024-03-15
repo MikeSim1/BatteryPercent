@@ -50,8 +50,8 @@
             checkBoxClockFormat = new CheckBox();
             checkBoxShowClock = new CheckBox();
             groupBox5 = new GroupBox();
-            checkBox3 = new CheckBox();
-            checkBox4 = new CheckBox();
+            checkBoxBatteryTime = new CheckBox();
+            checkBoxBatteryPercentage = new CheckBox();
             groupBox6 = new GroupBox();
             trackBar3 = new TrackBar();
             label8 = new Label();
@@ -171,6 +171,7 @@
             // 
             // trackBarTextOpacity
             // 
+            trackBarTextOpacity.LargeChange = 25;
             trackBarTextOpacity.Location = new Point(6, 204);
             trackBarTextOpacity.Name = "trackBarTextOpacity";
             trackBarTextOpacity.Size = new Size(104, 45);
@@ -187,6 +188,7 @@
             // 
             // trackBarBackgroundOpacity
             // 
+            trackBarBackgroundOpacity.LargeChange = 25;
             trackBarBackgroundOpacity.Location = new Point(6, 138);
             trackBarBackgroundOpacity.Name = "trackBarBackgroundOpacity";
             trackBarBackgroundOpacity.Size = new Size(104, 45);
@@ -213,6 +215,7 @@
             // 
             // trackBarOverallOpacity
             // 
+            trackBarOverallOpacity.LargeChange = 25;
             trackBarOverallOpacity.Location = new Point(6, 47);
             trackBarOverallOpacity.Name = "trackBarOverallOpacity";
             trackBarOverallOpacity.Size = new Size(104, 45);
@@ -270,8 +273,8 @@
             // 
             // groupBox5
             // 
-            groupBox5.Controls.Add(checkBox3);
-            groupBox5.Controls.Add(checkBox4);
+            groupBox5.Controls.Add(checkBoxBatteryTime);
+            groupBox5.Controls.Add(checkBoxBatteryPercentage);
             groupBox5.Location = new Point(12, 330);
             groupBox5.Name = "groupBox5";
             groupBox5.Size = new Size(292, 100);
@@ -279,25 +282,25 @@
             groupBox5.TabStop = false;
             groupBox5.Text = "Battery Settings";
             // 
-            // checkBox3
+            // checkBoxBatteryTime
             // 
-            checkBox3.AutoSize = true;
-            checkBox3.Location = new Point(6, 47);
-            checkBox3.Name = "checkBox3";
-            checkBox3.Size = new Size(184, 19);
-            checkBox3.TabIndex = 3;
-            checkBox3.Text = "Show Battery Time Remaining";
-            checkBox3.UseVisualStyleBackColor = true;
+            checkBoxBatteryTime.AutoSize = true;
+            checkBoxBatteryTime.Location = new Point(6, 47);
+            checkBoxBatteryTime.Name = "checkBoxBatteryTime";
+            checkBoxBatteryTime.Size = new Size(184, 19);
+            checkBoxBatteryTime.TabIndex = 3;
+            checkBoxBatteryTime.Text = "Show Battery Time Remaining";
+            checkBoxBatteryTime.UseVisualStyleBackColor = true;
             // 
-            // checkBox4
+            // checkBoxBatteryPercentage
             // 
-            checkBox4.AutoSize = true;
-            checkBox4.Location = new Point(6, 22);
-            checkBox4.Name = "checkBox4";
-            checkBox4.Size = new Size(157, 19);
-            checkBox4.TabIndex = 2;
-            checkBox4.Text = "Show Battery Percentage";
-            checkBox4.UseVisualStyleBackColor = true;
+            checkBoxBatteryPercentage.AutoSize = true;
+            checkBoxBatteryPercentage.Location = new Point(6, 22);
+            checkBoxBatteryPercentage.Name = "checkBoxBatteryPercentage";
+            checkBoxBatteryPercentage.Size = new Size(157, 19);
+            checkBoxBatteryPercentage.TabIndex = 2;
+            checkBoxBatteryPercentage.Text = "Show Battery Percentage";
+            checkBoxBatteryPercentage.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
@@ -385,8 +388,8 @@
         private CheckBox checkBoxClockFormat;
         private CheckBox checkBoxShowClock;
         private GroupBox groupBox5;
-        private CheckBox checkBox3;
-        private CheckBox checkBox4;
+        private CheckBox checkBoxBatteryTime;
+        private CheckBox checkBoxBatteryPercentage;
         private GroupBox groupBox6;
         private TrackBar trackBar3;
         private Label label8;
