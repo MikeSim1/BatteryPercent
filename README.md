@@ -21,6 +21,7 @@ To exit the application click on the system tray icon and right click on this ic
 ![battery overlay3](https://github.com/victory111111/BatteryPercent/assets/139520397/246a32a9-51d1-40c3-9eb0-159789094328)
 
 # Building
+Update 3/15/24: Now being developed on a Windows computer. Unsure if the build script will still work properly.
 To build, install CSC and simple run the build script `build_w_csc.sh`
 If you get an error `permission denied` simply run `chmod +x build_w_csc.sh` (Mac/Linux)
 No build script for Windows yet.
