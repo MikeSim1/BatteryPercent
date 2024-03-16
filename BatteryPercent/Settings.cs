@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace BatteryPercent
 {
     public partial class Settings : Form
@@ -19,7 +21,7 @@ namespace BatteryPercent
             applyChangesToProperties();
 
             // Recreate the form with new parameters
-            Program.instance.reloadFromProperties();
+            Program.applySettings = true;
             this.Close();
         }
 
@@ -67,6 +69,8 @@ namespace BatteryPercent
             props.ShowBatteryTime = this.checkBoxBatteryTime.Checked;
 
             // TODO: Implement sliders
+
+            props.Save();
         }
     }
 }

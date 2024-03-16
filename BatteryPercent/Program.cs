@@ -9,7 +9,7 @@ namespace BatteryPercent
 {
     class Program
     {
-        public static OverlayForm instance = null;
+        public static bool applySettings = false;
 
         [STAThread]
         static void Main(string[] args)
@@ -39,11 +39,6 @@ namespace BatteryPercent
 
         public OverlayForm()
         {
-            if (Program.instance == null)
-            {
-                Program.instance = this;
-            }
-
             this.FormBorderStyle = FormBorderStyle.None;
 
             reloadFromProperties();
@@ -126,6 +121,11 @@ namespace BatteryPercent
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
+            if (Program.applySettings)
+            {
+                Application.Restart();
+            }
+
             string systemInfo = GetSystemInfo();
             systemInfoLabel.Text = systemInfo;
             Debug.WriteLine(systemInfo);
@@ -160,6 +160,7 @@ namespace BatteryPercent
 
                 if (isCharging)
                 {
+                    // Just shows a unicode lightning bolt symbol instead of "charging"
                     stringToDisplay += "\U0001F5F2";
                 }
             }
