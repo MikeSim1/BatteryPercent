@@ -55,6 +55,7 @@
             groupBox6 = new GroupBox();
             trackBar3 = new TrackBar();
             label8 = new Label();
+            checkBoxStartAuto = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(459, 389);
+            buttonApply.Location = new Point(457, 414);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(109, 41);
             buttonApply.TabIndex = 0;
@@ -232,7 +233,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(344, 389);
+            buttonCancel.Location = new Point(342, 414);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(109, 41);
             buttonCancel.TabIndex = 10;
@@ -329,11 +330,22 @@
             label8.TabIndex = 0;
             label8.Text = "Overlay Size";
             // 
+            // checkBoxStartAuto
+            // 
+            checkBoxStartAuto.AutoSize = true;
+            checkBoxStartAuto.Location = new Point(316, 389);
+            checkBoxStartAuto.Name = "checkBoxStartAuto";
+            checkBoxStartAuto.Size = new Size(173, 19);
+            checkBoxStartAuto.TabIndex = 14;
+            checkBoxStartAuto.Text = "Start Automatically at Login";
+            checkBoxStartAuto.UseVisualStyleBackColor = true;
+            // 
             // Settings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(616, 440);
+            ClientSize = new Size(616, 468);
+            Controls.Add(checkBoxStartAuto);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
             Controls.Add(groupBox4);
@@ -362,6 +374,7 @@
             groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -393,5 +406,6 @@
         private GroupBox groupBox6;
         private TrackBar trackBar3;
         private Label label8;
+        private CheckBox checkBoxStartAuto;
     }
 }

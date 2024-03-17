@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using System.Diagnostics;
 
 namespace BatteryPercent
@@ -46,6 +47,8 @@ namespace BatteryPercent
             this.checkBoxBatteryTime.Checked = props.ShowBatteryTime;
 
             // TODO: Implement sliders
+
+            this.checkBoxStartAuto.Checked = props.StartAuto;
         }
 
         private void applyChangesToProperties()
@@ -70,7 +73,26 @@ namespace BatteryPercent
 
             // TODO: Implement sliders
 
+            props.StartAuto = this.checkBoxStartAuto.Checked;
+            setAutoStart();
+
             props.Save();
+        }
+
+        private void setAutoStart()
+        {
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (Properties.Settings.Default.StartAuto)
+            {
+                // Add an entry to the application
+                rk.SetValue("BatteryPercent", Application.ExecutablePath);
+            }
+            else
+            {
+                // Remove the entry to the application
+                rk.DeleteValue("BatteryPercent", false);
+            }
         }
     }
 }

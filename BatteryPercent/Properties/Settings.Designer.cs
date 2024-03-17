@@ -166,5 +166,17 @@ namespace BatteryPercent.Properties {
                 this["OverlaySize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StartAuto {
+            get {
+                return ((bool)(this["StartAuto"]));
+            }
+            set {
+                this["StartAuto"] = value;
+            }
+        }
     }
 }
