@@ -44,6 +44,7 @@ namespace BatteryPercent
             this.FormBorderStyle = FormBorderStyle.None;
 
             reloadFromProperties();
+            updateInterface();
 
             this.TopMost = true;
             this.ShowInTaskbar = false;
@@ -93,14 +94,16 @@ namespace BatteryPercent
             int initialStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
             SetWindowLong(this.Handle, GWL_EXSTYLE, initialStyle | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
+            // TODO: Add an update interval setting
             System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
-            updateTimer.Interval = UPDATE_INTERVAL;
+            updateTimer.Interval = 5000; //UPDATE_INTERVAL;
             updateTimer.Tick += UpdateTimer_Tick;
             updateTimer.Start();
 
             UpdateOverlaySizeAndPosition();
         }
 
+        // TODO: Fix the hotkey feature
         private void Subscribe()
         {
             // m_GlobalHook = Hook.GlobalEvents();
@@ -134,11 +137,11 @@ namespace BatteryPercent
 
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            if (Program.applySettings)
-            {
-                Application.Restart();
-            }
+            updateInterface();
+        }
 
+        private void updateInterface()
+        {
             string systemInfo = GetSystemInfo();
             systemInfoLabel.Text = systemInfo;
             Debug.WriteLine(systemInfo);
@@ -198,8 +201,11 @@ namespace BatteryPercent
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            e.Graphics.FillRectangle(new SolidBrush(Color.Black), this.ClientRectangle);
+            if (Program.props.NoFlicker)
+            {
+                base.OnPaint(e);
+                e.Graphics.FillRectangle(new SolidBrush(Color.Black), this.ClientRectangle);
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -226,31 +232,5 @@ namespace BatteryPercent
             // Show time in 12 hr time
             return "h:mm tt";
         }
-    }
-
-    class PerformanceInfo
-    {
-        [DllImport("psapi.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetPerformanceInfo([Out] out PERFORMANCE_INFORMATION PerformanceInformation, [In] int Size);
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct PERFORMANCE_INFORMATION
-    {
-        public int Size;
-        public IntPtr CommitTotal;
-        public IntPtr CommitLimit;
-        public IntPtr CommitPeak;
-        public IntPtr PhysicalTotal;
-        public IntPtr PhysicalAvailable;
-        public IntPtr SystemCache;
-        public IntPtr KernelTotal;
-        public IntPtr KernelPaged;
-        public IntPtr KernelNonPaged;
-        public IntPtr PageSize;
-        public int HandlesCount;
-        public int ProcessCount;
-        public int ThreadCount;
     }
 }

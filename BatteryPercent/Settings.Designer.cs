@@ -348,9 +348,9 @@
             checkBoxNoFlicker.AutoSize = true;
             checkBoxNoFlicker.Location = new Point(310, 362);
             checkBoxNoFlicker.Name = "checkBoxNoFlicker";
-            checkBoxNoFlicker.Size = new Size(159, 19);
+            checkBoxNoFlicker.Size = new Size(274, 19);
             checkBoxNoFlicker.TabIndex = 15;
-            checkBoxNoFlicker.Text = "Use Non Flickering Mode";
+            checkBoxNoFlicker.Text = "Use Non Flickering Mode (less opacity options)";
             checkBoxNoFlicker.UseVisualStyleBackColor = true;
             // 
             // Settings

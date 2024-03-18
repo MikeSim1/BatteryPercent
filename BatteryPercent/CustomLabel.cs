@@ -20,9 +20,9 @@ namespace BatteryPercent
 
         public CustomLabel()
         {
-            SetStyle(ControlStyles.Opaque, true);
-            SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
-            SetStyle(ControlStyles.ResizeRedraw, true);
+            // FIXME: This double buffer setting should fix flicker, but it does not.
+            //  Need to write a backbuffer to handle drawing new label and then push it to the front buffer.
+            SetStyle(ControlStyles.Opaque | ControlStyles.OptimizedDoubleBuffer, true);
 
             if (Program.props.OverlaySize <= 0)
             {
@@ -87,7 +87,7 @@ namespace BatteryPercent
                 // Label ForeColor (AKA text color)
                 Color pForeColor = myForeColor;
                 if (myForeColor == Color.Transparent && myParent != null)
-                    pBackColor = myParent.ForeColor;
+                    pForeColor = myParent.ForeColor;
 
                 base.OnPaint(new PaintEventArgs(gr, e.ClipRectangle));
 
@@ -103,7 +103,7 @@ namespace BatteryPercent
 
                             myBitmap.SetPixel(x, y, Color.FromArgb(colorAlpha, PixelColor));
                         else
-                            myBitmap.SetPixel(x, y, Color.FromArgb(255, pBackColor));
+                            myBitmap.SetPixel(x, y, Color.FromArgb(255, pForeColor));
                     }
                 }
 

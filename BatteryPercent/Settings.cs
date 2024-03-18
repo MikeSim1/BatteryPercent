@@ -89,6 +89,7 @@ namespace BatteryPercent
             setAutoStart();
 
             Program.props.Save();
+            Application.Restart();
         }
 
         private void setAutoStart()
