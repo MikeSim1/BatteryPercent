@@ -3,12 +3,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 // using Gma.System.MouseKeyHook;
 
 namespace BatteryPercent
 {
     class Program
     {
+        public static Properties.Settings props = Properties.Settings.Default;
         public static bool applySettings = false;
 
         [STAThread]
@@ -63,18 +65,29 @@ namespace BatteryPercent
             // TODO: Make background color adjustable
             this.BackColor = Color.Black;
 
-            // TODO: Make opacity adjustable
-            this.Opacity = 0.6;
+            // Percentage based opacity
+            this.Opacity = (float)Program.props.OverallOpacity / 100;
+            Debug.WriteLine("opacity: " + this.Opacity.ToString());
 
-            systemInfoLabel = new Label();
-            systemInfoLabel.ForeColor = Color.White;
+            if (Program.props.NoFlicker)
+            {
+                // Using a regular label prevents flickering, but text opacity can't be changed
+                systemInfoLabel = new Label();
+            }
+            else
+            {
+                systemInfoLabel = new CustomLabel();
+            }
+
             systemInfoLabel.AutoSize = true;
 
-            // TODO: Adjust this based on the current resolution
+            // TODO: Adjust this based on the current resolution for automatic setting
             //  (* 2) for 1080p, (+ 3) seems to be a good size for 900p
-            float fontSize = systemInfoLabel.Font.Size;
+            int overlaySize = Program.props.OverlaySize * 2;
+            float fontSize = systemInfoLabel.Font.Size + overlaySize;
 
             systemInfoLabel.Font = new Font(systemInfoLabel.Font.FontFamily, fontSize);
+            systemInfoLabel.ForeColor = Color.White;
             this.Controls.Add(systemInfoLabel);
 
             int initialStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
@@ -136,24 +149,23 @@ namespace BatteryPercent
 
         private string GetSystemInfo()
         {
-            Properties.Settings props = Properties.Settings.Default;
             string stringToDisplay = "";
 
             bool isCharging = SystemInformation.PowerStatus.BatteryChargeStatus.HasFlag(BatteryChargeStatus.Charging);
 
-            if (props.ShowClock)
+            if (Program.props.ShowClock)
             {
-                string time = DateTime.Now.ToString("hh:mm tt");
+                string time = DateTime.Now.ToString(getTimeFormat());
                 stringToDisplay += $"{time}";
 
                 // Some nicer formatting if we're showing anything other than time
-                if (props.ShowBatteryPercent || props.ShowBatteryTime)
+                if (Program.props.ShowBatteryPercent || Program.props.ShowBatteryTime)
                 {
                     stringToDisplay += " | ";
                 }
             }
 
-            if (props.ShowBatteryPercent)
+            if (Program.props.ShowBatteryPercent)
             {
                 string batteryStatus = SystemInformation.PowerStatus.BatteryLifePercent.ToString("P0");
                 stringToDisplay += $"Battery: {batteryStatus} ";
@@ -165,7 +177,7 @@ namespace BatteryPercent
                 }
             }
 
-            if (props.ShowBatteryTime && !isCharging)
+            if (Program.props.ShowBatteryTime && !isCharging)
             {
                 int batteryLifeInSeconds = SystemInformation.PowerStatus.BatteryLifeRemaining;
                 int batteryHours = batteryLifeInSeconds / 3600;
@@ -201,6 +213,18 @@ namespace BatteryPercent
         {
             // m_GlobalHook.KeyDown -= GlobalHookKeyPress;
             // m_GlobalHook.Dispose();
+        }
+
+        private string getTimeFormat()
+        {
+            if (Program.props.ShowClockFormat)
+            {
+                // Show time in 24 hr time
+                return "HH:mm";
+            }
+
+            // Show time in 12 hr time
+            return "h:mm tt";
         }
     }
 

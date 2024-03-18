@@ -42,7 +42,6 @@
             label5 = new Label();
             trackBarBackgroundOpacity = new TrackBar();
             label4 = new Label();
-            checkBoxMatchOpacity = new CheckBox();
             trackBarOverallOpacity = new TrackBar();
             label3 = new Label();
             buttonCancel = new Button();
@@ -53,9 +52,10 @@
             checkBoxBatteryTime = new CheckBox();
             checkBoxBatteryPercentage = new CheckBox();
             groupBox6 = new GroupBox();
-            trackBar3 = new TrackBar();
+            trackBarOverlaySize = new TrackBar();
             label8 = new Label();
             checkBoxStartAuto = new CheckBox();
+            checkBoxNoFlicker = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -65,12 +65,12 @@
             groupBox4.SuspendLayout();
             groupBox5.SuspendLayout();
             groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarOverlaySize).BeginInit();
             SuspendLayout();
             // 
             // buttonApply
             // 
-            buttonApply.Location = new Point(457, 414);
+            buttonApply.Location = new Point(454, 412);
             buttonApply.Name = "buttonApply";
             buttonApply.Size = new Size(109, 41);
             buttonApply.TabIndex = 0;
@@ -90,6 +90,7 @@
             // checkBoxAutoBackgroundColor
             // 
             checkBoxAutoBackgroundColor.AutoSize = true;
+            checkBoxAutoBackgroundColor.Enabled = false;
             checkBoxAutoBackgroundColor.Location = new Point(6, 22);
             checkBoxAutoBackgroundColor.Name = "checkBoxAutoBackgroundColor";
             checkBoxAutoBackgroundColor.Size = new Size(181, 19);
@@ -131,6 +132,7 @@
             // checkBoxAutoTextColor
             // 
             checkBoxAutoTextColor.AutoSize = true;
+            checkBoxAutoTextColor.Enabled = false;
             checkBoxAutoTextColor.Location = new Point(6, 22);
             checkBoxAutoTextColor.Name = "checkBoxAutoTextColor";
             checkBoxAutoTextColor.Size = new Size(138, 19);
@@ -160,12 +162,11 @@
             groupBox3.Controls.Add(label5);
             groupBox3.Controls.Add(trackBarBackgroundOpacity);
             groupBox3.Controls.Add(label4);
-            groupBox3.Controls.Add(checkBoxMatchOpacity);
             groupBox3.Controls.Add(trackBarOverallOpacity);
             groupBox3.Controls.Add(label3);
             groupBox3.Location = new Point(310, 12);
             groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(292, 260);
+            groupBox3.Size = new Size(292, 233);
             groupBox3.TabIndex = 9;
             groupBox3.TabStop = false;
             groupBox3.Text = "Opacity";
@@ -173,15 +174,18 @@
             // trackBarTextOpacity
             // 
             trackBarTextOpacity.LargeChange = 25;
-            trackBarTextOpacity.Location = new Point(6, 204);
+            trackBarTextOpacity.Location = new Point(6, 179);
+            trackBarTextOpacity.Maximum = 100;
             trackBarTextOpacity.Name = "trackBarTextOpacity";
-            trackBarTextOpacity.Size = new Size(104, 45);
+            trackBarTextOpacity.Size = new Size(274, 45);
+            trackBarTextOpacity.SmallChange = 10;
             trackBarTextOpacity.TabIndex = 15;
+            trackBarTextOpacity.TickFrequency = 10;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(6, 186);
+            label5.Location = new Point(6, 161);
             label5.Name = "label5";
             label5.Size = new Size(72, 15);
             label5.TabIndex = 14;
@@ -190,37 +194,33 @@
             // trackBarBackgroundOpacity
             // 
             trackBarBackgroundOpacity.LargeChange = 25;
-            trackBarBackgroundOpacity.Location = new Point(6, 138);
+            trackBarBackgroundOpacity.Location = new Point(6, 113);
+            trackBarBackgroundOpacity.Maximum = 100;
             trackBarBackgroundOpacity.Name = "trackBarBackgroundOpacity";
-            trackBarBackgroundOpacity.Size = new Size(104, 45);
+            trackBarBackgroundOpacity.Size = new Size(274, 45);
+            trackBarBackgroundOpacity.SmallChange = 10;
             trackBarBackgroundOpacity.TabIndex = 13;
+            trackBarBackgroundOpacity.TickFrequency = 10;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(6, 120);
+            label4.Location = new Point(6, 95);
             label4.Name = "label4";
             label4.Size = new Size(115, 15);
             label4.TabIndex = 12;
             label4.Text = "Background Opacity";
             // 
-            // checkBoxMatchOpacity
-            // 
-            checkBoxMatchOpacity.AutoSize = true;
-            checkBoxMatchOpacity.Location = new Point(6, 98);
-            checkBoxMatchOpacity.Name = "checkBoxMatchOpacity";
-            checkBoxMatchOpacity.Size = new Size(174, 19);
-            checkBoxMatchOpacity.TabIndex = 11;
-            checkBoxMatchOpacity.Text = "Text and Background Match";
-            checkBoxMatchOpacity.UseVisualStyleBackColor = true;
-            // 
             // trackBarOverallOpacity
             // 
             trackBarOverallOpacity.LargeChange = 25;
             trackBarOverallOpacity.Location = new Point(6, 47);
+            trackBarOverallOpacity.Maximum = 100;
             trackBarOverallOpacity.Name = "trackBarOverallOpacity";
-            trackBarOverallOpacity.Size = new Size(104, 45);
+            trackBarOverallOpacity.Size = new Size(274, 45);
+            trackBarOverallOpacity.SmallChange = 10;
             trackBarOverallOpacity.TabIndex = 10;
+            trackBarOverallOpacity.TickFrequency = 10;
             // 
             // label3
             // 
@@ -233,7 +233,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(342, 414);
+            buttonCancel.Location = new Point(339, 412);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(109, 41);
             buttonCancel.TabIndex = 10;
@@ -305,21 +305,24 @@
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(trackBar3);
+            groupBox6.Controls.Add(trackBarOverlaySize);
             groupBox6.Controls.Add(label8);
-            groupBox6.Location = new Point(316, 278);
+            groupBox6.Location = new Point(310, 251);
             groupBox6.Name = "groupBox6";
-            groupBox6.Size = new Size(286, 105);
+            groupBox6.Size = new Size(292, 105);
             groupBox6.TabIndex = 13;
             groupBox6.TabStop = false;
             groupBox6.Text = "General";
             // 
-            // trackBar3
+            // trackBarOverlaySize
             // 
-            trackBar3.Location = new Point(6, 47);
-            trackBar3.Name = "trackBar3";
-            trackBar3.Size = new Size(274, 45);
-            trackBar3.TabIndex = 10;
+            trackBarOverlaySize.LargeChange = 1;
+            trackBarOverlaySize.Location = new Point(6, 47);
+            trackBarOverlaySize.Minimum = 1;
+            trackBarOverlaySize.Name = "trackBarOverlaySize";
+            trackBarOverlaySize.Size = new Size(274, 45);
+            trackBarOverlaySize.TabIndex = 10;
+            trackBarOverlaySize.Value = 5;
             // 
             // label8
             // 
@@ -333,18 +336,29 @@
             // checkBoxStartAuto
             // 
             checkBoxStartAuto.AutoSize = true;
-            checkBoxStartAuto.Location = new Point(316, 389);
+            checkBoxStartAuto.Location = new Point(310, 387);
             checkBoxStartAuto.Name = "checkBoxStartAuto";
             checkBoxStartAuto.Size = new Size(173, 19);
             checkBoxStartAuto.TabIndex = 14;
             checkBoxStartAuto.Text = "Start Automatically at Login";
             checkBoxStartAuto.UseVisualStyleBackColor = true;
             // 
+            // checkBoxNoFlicker
+            // 
+            checkBoxNoFlicker.AutoSize = true;
+            checkBoxNoFlicker.Location = new Point(310, 362);
+            checkBoxNoFlicker.Name = "checkBoxNoFlicker";
+            checkBoxNoFlicker.Size = new Size(159, 19);
+            checkBoxNoFlicker.TabIndex = 15;
+            checkBoxNoFlicker.Text = "Use Non Flickering Mode";
+            checkBoxNoFlicker.UseVisualStyleBackColor = true;
+            // 
             // Settings
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(616, 468);
+            Controls.Add(checkBoxNoFlicker);
             Controls.Add(checkBoxStartAuto);
             Controls.Add(groupBox6);
             Controls.Add(groupBox5);
@@ -372,7 +386,7 @@
             groupBox5.PerformLayout();
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarOverlaySize).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -393,7 +407,6 @@
         private Label label5;
         private TrackBar trackBarBackgroundOpacity;
         private Label label4;
-        private CheckBox checkBoxMatchOpacity;
         private TrackBar trackBarOverallOpacity;
         private Label label3;
         private Button buttonCancel;
@@ -404,8 +417,9 @@
         private CheckBox checkBoxBatteryTime;
         private CheckBox checkBoxBatteryPercentage;
         private GroupBox groupBox6;
-        private TrackBar trackBar3;
+        private TrackBar trackBarOverlaySize;
         private Label label8;
         private CheckBox checkBoxStartAuto;
+        private CheckBox checkBoxNoFlicker;
     }
 }

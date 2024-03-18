@@ -157,7 +157,7 @@ namespace BatteryPercent.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public int OverlaySize {
             get {
                 return ((int)(this["OverlaySize"]));
@@ -176,6 +176,18 @@ namespace BatteryPercent.Properties {
             }
             set {
                 this["StartAuto"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoFlicker {
+            get {
+                return ((bool)(this["NoFlicker"]));
+            }
+            set {
+                this["NoFlicker"] = value;
             }
         }
     }
