@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 // using Gma.System.MouseKeyHook;
 
 namespace BatteryPercent
@@ -38,6 +37,15 @@ namespace BatteryPercent
 
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const UInt32 SWP_NOSIZE = 0x0001;
+        private const UInt32 SWP_NOMOVE = 0x0002;
+        private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         public OverlayForm()
         {
@@ -83,6 +91,7 @@ namespace BatteryPercent
             systemInfoLabel.AutoSize = true;
 
             // TODO: Adjust this based on the current resolution for automatic setting
+            // The below properties only apply when we use a regular label (AKA non flicker mode)
             //  (* 2) for 1080p, (+ 3) seems to be a good size for 900p
             int overlaySize = Program.props.OverlaySize * 2;
             float fontSize = systemInfoLabel.Font.Size + overlaySize;
