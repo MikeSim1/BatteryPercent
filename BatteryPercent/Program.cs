@@ -1,8 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 // using Gma.System.MouseKeyHook;
 
 namespace BatteryPercent
@@ -11,6 +8,8 @@ namespace BatteryPercent
     {
         public static Properties.Settings props = Properties.Settings.Default;
         public static bool applySettings = false;
+
+        public static AsusACPI acpi;
 
         [STAThread]
         static void Main(string[] args)
@@ -51,6 +50,8 @@ namespace BatteryPercent
 
         public OverlayForm()
         {
+            Program.acpi = new AsusACPI();
+
             this.FormBorderStyle = FormBorderStyle.None;
 
             reloadFromProperties();
@@ -202,6 +203,14 @@ namespace BatteryPercent
 
                 stringToDisplay += $"{batteryHours} hrs {batteryMinutes} mins";
             }
+
+            // FIXME: ??? Does this get the device mode? Looking for "Silent", "Balanced", "Eco", etc.
+            stringToDisplay += $" Mode: {Program.acpi.GetCurrentASUSMode}";
+
+            // Temperatures for CPU and GPU
+            Debug.WriteLine(Program.acpi.DeviceGet(AsusACPI.Temp_CPU));
+            Debug.WriteLine(Program.acpi.DeviceGet(AsusACPI.Temp_GPU));
+
 
             return stringToDisplay;
         }
