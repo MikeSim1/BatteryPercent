@@ -1,8 +1,7 @@
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // using Gma.System.MouseKeyHook;
 
 namespace BatteryPercent
@@ -40,14 +39,30 @@ namespace BatteryPercent
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
         // Enables overlay to show over non-fullscreen applications
-        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
-        private const UInt32 SWP_NOSIZE = 0x0001;
-        private const UInt32 SWP_NOMOVE = 0x0002;
-        private const UInt32 TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+        private const int SW_SHOWNOACTIVATE = 4;
+        private const int HWND_TOPMOST = -1;
+        private const uint SWP_NOACTIVATE = 0x0010;
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        static extern bool SetWindowPos(
+         int hWnd,             // Window handle
+         int hWndInsertAfter,  // Placement-order handle
+         int X,                // Horizontal position
+         int Y,                // Vertical position
+         int cx,               // Width
+         int cy,               // Height
+         uint uFlags);         // Window positioning flags
 
         [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        static void ShowInactiveTopmost(Form frm)
+        {
+            ShowWindow(frm.Handle, SW_SHOWNOACTIVATE);
+            SetWindowPos(frm.Handle.ToInt32(), HWND_TOPMOST,
+            frm.Left, frm.Top, frm.Width, frm.Height,
+            SWP_NOACTIVATE);
+        }
 
         public OverlayForm()
         {
@@ -58,6 +73,7 @@ namespace BatteryPercent
 
             this.TopMost = true;
             this.ShowInTaskbar = false;
+            ShowInactiveTopmost(this);
 
             trayIcon = new NotifyIcon();
             trayIcon.Text = "Game Overlay App";
