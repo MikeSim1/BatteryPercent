@@ -26,6 +26,7 @@ namespace BatteryPercent
         private const int UPDATE_INTERVAL = 1000;
         private Label systemInfoLabel;
         private NotifyIcon trayIcon;
+        private Boolean firstUpdate = true;
         // private IKeyboardMouseEvents m_GlobalHook;
 
         const int GWL_EXSTYLE = -20;
@@ -38,6 +39,7 @@ namespace BatteryPercent
         [DllImport("user32.dll")]
         public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        // Enables overlay to show over non-fullscreen applications
         private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
         private const UInt32 SWP_NOSIZE = 0x0001;
         private const UInt32 SWP_NOMOVE = 0x0002;
@@ -102,6 +104,9 @@ namespace BatteryPercent
 
             int initialStyle = GetWindowLong(this.Handle, GWL_EXSTYLE);
             SetWindowLong(this.Handle, GWL_EXSTYLE, initialStyle | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+
+            // Add the drag listener class
+            MouseDragger mouseDragger = new MouseDragger(this);
 
             // TODO: Add an update interval setting
             System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
@@ -205,7 +210,13 @@ namespace BatteryPercent
         {
             Size textSize = TextRenderer.MeasureText(systemInfoLabel.Text, systemInfoLabel.Font);
             this.Size = textSize + new Size(10, 5);
-            this.Location = new Point(10, 10);
+
+            // Only set the position if the overlay was just started
+            if (firstUpdate)
+            {
+                firstUpdate = false;
+                this.Location = new Point(10, 10);
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
